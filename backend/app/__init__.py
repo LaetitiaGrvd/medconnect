@@ -15,7 +15,7 @@ CORS(
     app,
     supports_credentials=True,
     resources={r"/api/*": {"origins": [
-        "https://medconnect-frontend-fy9z.onrender.com"
+        "https://medconnect-frontend-lhur.onrender.com"
     ]}}
 )
 
