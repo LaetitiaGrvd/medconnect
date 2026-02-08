@@ -2,12 +2,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const langButtons = document.querySelectorAll(".lang-switch button");
   const defaultLang = "en";
   let currentLang = localStorage.getItem("lang") || defaultLang;
+  let translations = {};
+
+  function t(key, fallback) {
+    const value = translations[key];
+    if (value != null && String(value).trim()) return String(value);
+    return fallback;
+  }
+
+  function expose() {
+    window.MC_I18N = {
+      t,
+      getLang: () => currentLang,
+      loadLanguage,
+    };
+  }
 
   // Load translations from JSON
   function loadLanguage(lang) {
     fetch(`lang/${lang}.json`)
       .then(res => res.json())
       .then(data => {
+        translations = data || {};
         document.querySelectorAll("[data-i18n], [data-i18n-placeholder]").forEach(el => {
           // For placeholders
           if (el.hasAttribute("data-i18n-placeholder")) {
@@ -34,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Save selection
         localStorage.setItem("lang", lang);
         currentLang = lang;
+        expose();
       })
       .catch(err => console.error("Translation load error:", err));
   }

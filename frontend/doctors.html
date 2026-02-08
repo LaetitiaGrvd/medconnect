@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Find Doctors – MedConnect</title>
+  <title data-i18n="doctors_page_title">Find Doctors – MedConnect</title>
 
   <!-- UIcons -->
   <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-brands/css/uicons-brands.css">
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/base.css">
@@ -34,19 +35,21 @@
   <div class="side-menu-overlay" id="sideMenuOverlay" aria-hidden="true"></div>
 
   <!-- Side menu -->
-  <nav class="side-menu" id="sideMenu" role="dialog" aria-modal="true" aria-hidden="true">
+  <nav class="side-menu" id="sideMenu" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="sideMenuTitle">
     <button class="close-btn" id="closeMenu" aria-label="Close menu">×</button>
+    <h2 id="sideMenuTitle" class="visually-hidden" data-i18n="nav_menu">Main Menu</h2>
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="doctors.html">Doctors</a></li>
-      <li><a href="specialties.html">Specialties</a></li>
-      <li><a href="labs.html">Lab Tests</a></li>
-      <li><a href="pharmacy.html">Pharmacy</a></li>
-      <li><a href="portal.html">Dashboard</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="privacy.html">Privacy Policy</a></li>
-      <li><a href="terms.html">Terms of Service</a></li>
+      <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+      <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
+      <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
+      <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
+      <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
+
+      <li><a href="portal.html" data-i18n="qa_portal">Dashboard</a></li>
+      <li><a href="about.html" data-i18n="link_about">About</a></li>
+      <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+      <li><a href="privacy.html" data-i18n="privacy">Privacy Policy</a></li>
+      <li><a href="terms.html" data-i18n="terms">Terms of Service</a></li>
     </ul>
   </nav>
 
@@ -65,7 +68,7 @@
         />
 
         <select id="specialtyFilter">
-          <option value="">All Specialties</option>
+          <option value="" data-i18n="filter_all">All Specialties</option>
         </select>
       </div>
 
@@ -78,15 +81,15 @@
   <nav class="mc-bottom-bar" role="navigation">
     <a href="appointment.html" class="mc-tab">
       <i class="fi fi-rr-calendar mc-ico"></i>
-      <span class="mc-lbl">Book</span>
+      <span class="mc-lbl" data-i18n="btn_book">Book</span>
     </a>
     <a href="doctors.html" class="mc-tab">
       <i class="fi fi-rr-stethoscope mc-ico"></i>
-      <span class="mc-lbl">Doctors</span>
+      <span class="mc-lbl" data-i18n="qa_doctors">Doctors</span>
     </a>
     <a href="labs.html" class="mc-tab">
       <i class="fi fi-rr-test-tube mc-ico"></i>
-      <span class="mc-lbl">Labs</span>
+      <span class="mc-lbl" data-i18n="qa_lab">Lab Tests</span>
     </a>
   </nav>
 
@@ -94,40 +97,43 @@
   <footer class="footer">
     <div class="footer-grid">
       <div class="footer-col">
-        <h3>Contact</h3>
+        <h3 data-i18n="footer_contact">Contact</h3>
         <p><i class="fi fi-rr-phone-call"></i> +230 123 4567</p>
         <p><i class="fi fi-rr-envelope"></i> info@medconnect.mu</p>
         <p><i class="fi fi-rr-marker"></i> Quatre Bornes</p>
       </div>
 
       <div class="footer-col">
-        <h3>Quick Links</h3>
+        <h3 data-i18n="footer_links">Quick Links</h3>
         <ul>
-          <li><a href="about.html">About</a></li>
-          <li><a href="specialties.html">Specialties</a></li>
-          <li><a href="doctors.html">Doctors</a></li>
-          <li><a href="labs.html">Labs</a></li>
-          <li><a href="pharmacy.html">Pharmacy</a></li>
+          <li><a href="index.html#about" data-i18n="link_about">About</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+          <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
+          <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
+          <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
+          <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
-        <h3>Follow Us</h3>
+        <h3 data-i18n="footer_follow">Follow Us</h3>
         <div class="footer-socials">
-          <a href="#"><i class="fi fi-rr-facebook"></i></a>
-          <a href="#"><i class="fi fi-rr-linkedin"></i></a>
-          <a href="#"><i class="fi fi-rr-instagram"></i></a>
+          <a href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fi fi-brands-facebook"></i></a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fi fi-brands-linkedin"></i></a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fi fi-brands-instagram"></i></a>
         </div>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <p>&copy; 2025 MedConnect. All rights reserved.</p>
+      <p>&copy; 2025 MedConnect. <span data-i18n="rights_reserved">All rights reserved.</span></p>
     </div>
   </footer>
 
   <!-- JS (single, clean load order) -->
   <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/bottom-bar.js"></script>
@@ -136,3 +142,13 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

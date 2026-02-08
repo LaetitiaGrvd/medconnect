@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="doc_profile_page_title">Doctor Profile - MedConnect</title>
+
+  <!-- UIcons -->
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-brands/css/uicons-brands.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/doctor-profile.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="mc-topbar">
+    <div class="mc-wrap">
+      <button class="hamburger" aria-label="Open menu">≡</button>
+      <a href="index.html" class="brand">MedConnect</a>
+      <div class="lang-switch">
+        <button data-lang="en" aria-pressed="true">EN</button>
+        <button data-lang="fr" aria-pressed="false">FR</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Overlay -->
+  <div class="side-menu-overlay" id="sideMenuOverlay" aria-hidden="true"></div>
+
+  <!-- Side menu -->
+  <nav class="side-menu" id="sideMenu" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="sideMenuTitle">
+    <button class="close-btn" id="closeMenu" aria-label="Close menu">×</button>
+    <h2 id="sideMenuTitle" class="visually-hidden" data-i18n="nav_menu">Main Menu</h2>
+    <ul>
+      <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+      <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
+      <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
+      <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
+      <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
+      <li><a href="portal.html" data-i18n="qa_portal">Dashboard</a></li>
+      <li><a href="about.html" data-i18n="link_about">About</a></li>
+      <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+      <li><a href="notices.html" data-i18n="nav_notices">Notices</a></li>
+      <li><a href="privacy.html" data-i18n="privacy">Privacy Policy</a></li>
+      <li><a href="terms.html" data-i18n="terms">Terms of Service</a></li>
+    </ul>
+  </nav>
+
+  <main class="doctor-profile-page">
+    <section class="doctor-hero">
+      <div class="container">
+        <p class="doctor-hero__spec" id="doctorHeroSpecialty"></p>
+        <h1 id="doctorHeroName">Doctor profile</h1>
+      </div>
+    </section>
+
+    <section class="doctor-profile-content" id="doctorProfileContent">
+      <div class="container doctor-profile-grid">
+        <aside class="profile-card">
+          <img id="doctorAvatar" class="profile-card__avatar" alt="Doctor avatar" />
+          <h2 id="doctorName" class="profile-card__name"></h2>
+          <p id="doctorSpecialty" class="profile-card__spec"></p>
+
+          <div class="profile-card__block">
+            <h3 data-i18n="doc_profile_working_hours">Working hours</h3>
+            <p id="doctorHours" class="profile-card__hours"></p>
+          </div>
+        </aside>
+
+        <div class="doctor-details">
+          <section class="details-section">
+            <h2 data-i18n="doc_profile_professional_details">Professional details</h2>
+            <div class="details-grid">
+              <div class="details-group">
+                <h3 data-i18n="doc_profile_experience">Experience</h3>
+                <p id="doctorExperienceEmpty" class="muted" hidden data-i18n="doc_profile_not_specified">Not specified</p>
+                <ul id="doctorExperience" class="details-list"></ul>
+              </div>
+              <div class="details-group">
+                <h3 data-i18n="doc_profile_certifications">Certifications</h3>
+                <p id="doctorCertsEmpty" class="muted" hidden data-i18n="doc_profile_not_specified">Not specified</p>
+                <ul id="doctorCertifications" class="details-list"></ul>
+              </div>
+              <div class="details-group">
+                <h3 data-i18n="doc_profile_specialisations">Specialisations</h3>
+                <p id="doctorSpecsEmpty" class="muted" hidden data-i18n="doc_profile_not_specified">Not specified</p>
+                <ul id="doctorSpecialisations" class="details-list"></ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="details-section">
+            <h2 data-i18n="doc_profile_about">About</h2>
+            <p id="doctorBio" class="doctor-bio"></p>
+          </section>
+
+          <div class="doctor-cta">
+            <div>
+              <h3 data-i18n="doc_profile_cta_title">Ready to book?</h3>
+              <p class="muted" data-i18n="doc_profile_cta_body">Schedule an appointment with this doctor in minutes.</p>
+            </div>
+            <a id="doctorBookBtn" class="btn primary" href="#" data-i18n="doc_profile_book">Book appointment</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doctor-not-found" id="doctorNotFound" hidden>
+      <h2 data-i18n="doc_profile_not_found">Doctor not found</h2>
+      <p class="muted" data-i18n="doc_profile_not_found_body">We couldn't find this doctor profile. Please return to the doctors page.</p>
+      <a href="doctors.html" class="btn ghost" data-i18n="doc_profile_back">Back to doctors</a>
+    </section>
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="mc-bottom-bar" role="navigation">
+    <a href="appointment.html" class="mc-tab">
+      <i class="fi fi-rr-calendar mc-ico"></i>
+      <span class="mc-lbl" data-i18n="btn_book">Book</span>
+    </a>
+    <a href="doctors.html" class="mc-tab">
+      <i class="fi fi-rr-stethoscope mc-ico"></i>
+      <span class="mc-lbl" data-i18n="qa_doctors">Doctors</span>
+    </a>
+    <a href="labs.html" class="mc-tab">
+      <i class="fi fi-rr-test-tube mc-ico"></i>
+      <span class="mc-lbl" data-i18n="qa_lab">Lab Tests</span>
+    </a>
+  </nav>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3 data-i18n="footer_contact">Contact</h3>
+        <p><i class="fi fi-rr-phone-call"></i> +230 123 4567</p>
+        <p><i class="fi fi-rr-envelope"></i> info@medconnect.mu</p>
+        <p><i class="fi fi-rr-marker"></i> 123 Health St, Quatre Bornes</p>
+      </div>
+      <div class="footer-col">
+        <h3 data-i18n="footer_links">Quick Links</h3>
+        <ul>
+          <li><a href="index.html#about" data-i18n="link_about">About</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+          <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
+          <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
+          <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
+          <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3 data-i18n="footer_follow">Follow Us</h3>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fi fi-brands-facebook"></i></a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fi fi-brands-linkedin"></i></a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fi fi-brands-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 MedConnect. <span data-i18n="rights_reserved">All rights reserved.</span></p>
+      <a href="privacy.html" data-i18n="privacy">Privacy Policy</a> |
+      <a href="terms.html" data-i18n="terms">Terms of Service</a>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/bottom-bar.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script src="js/doctorProfile.js"></script>
+</body>
+</html>

@@ -6,6 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!listEl || !searchInput || !specialtyFilter) return;
 
   let doctors = [];
+  const DEFAULT_AVATAR = "assets/img/default_avatar.jpg";
+  const api = window.MC_API;
+  const t = window.MC_I18N?.t || ((_, fallback) => fallback);
+  const API_BASE = api?.API_BASE || "";
 
   function normalize(str) {
     return String(str || "").trim().toLowerCase();
@@ -20,10 +24,25 @@ document.addEventListener("DOMContentLoaded", () => {
       .replaceAll("'", "&#039;");
   }
 
+  function resolveAvatarUrl(url) {
+    if (!url) return DEFAULT_AVATAR;
+    if (/^https?:\/\//i.test(url)) return url;
+    if (!API_BASE) return url.startsWith("/") ? url : `/${url}`;
+    return url.startsWith("/") ? `${API_BASE}${url}` : `${API_BASE}/${url}`;
+  }
+
   function buildSpecialtyFilter(items) {
     const unique = [...new Set(items.map(d => normalize(d.specialty)))].filter(Boolean);
 
-    specialtyFilter.innerHTML = `<option value="">All Specialties</option>`;
+    const currentPlaceholder =
+      specialtyFilter.querySelector('option[value=""]')?.textContent || "All Specialties";
+
+    specialtyFilter.innerHTML = "";
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = currentPlaceholder;
+    placeholder.setAttribute("data-i18n", "filter_all");
+    specialtyFilter.appendChild(placeholder);
 
     unique.forEach(spec => {
       const opt = document.createElement("option");
@@ -51,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function render(items) {
     if (!items.length) {
-      listEl.innerHTML = "<p>No doctors found.</p>";
+      listEl.innerHTML = `<p>${t("doctors_empty", "No doctors found.")}</p>`;
       return;
     }
 
@@ -61,14 +80,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const specialty = escapeHtml(d.specialty);
 
       const bookUrl =
-        `appointment.html?specialty=${encodeURIComponent(d.specialty)}&doctor=${id}`;
+        `appointment.html?specialty=${encodeURIComponent(d.specialty)}&doctor_id=${id}`;
+      const profileUrl = `doctor-profile.html?doctor_id=${id}`;
+
+      const avatarUrl = resolveAvatarUrl(d.avatar_url);
 
       return `
         <article class="doctor-card" data-specialty="${normalize(d.specialty)}">
-          <img src="assets/img/doc.jpg" alt="${name}" class="doctor-photo">
+          <img src="${avatarUrl}" alt="${name}" class="doctor-photo" onerror="this.onerror=null;this.src='${DEFAULT_AVATAR}';">
           <h3>${name}</h3>
           <p>${specialty}</p>
-          <a href="${bookUrl}" class="btn primary">Book</a>
+          <div class="doctor-card__actions">
+            <a href="${profileUrl}" class="btn ghost">${t("btn_view_profile", "View Profile")}</a>
+            <a href="${bookUrl}" class="btn primary">${t("btn_book", "Book")}</a>
+          </div>
         </article>
       `;
     }).join("");
@@ -79,16 +104,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function init() {
-    try {
-      const res = await fetch(`${window.API_BASE_URL}/api/doctors`);
-      if (!res.ok) throw new Error("Doctors API failed");
+    if (!api?.hasBase?.()) {
+      listEl.innerHTML = `<p>${t("api_missing", "Service is temporarily unavailable.")}</p>`;
+      return;
+    }
 
-      doctors = await res.json();
+    try {
+      const { ok, data } = await api.getJson("/api/doctors");
+      if (!ok) throw new Error("Doctors API failed");
+
+      const payload = data;
+      doctors = Array.isArray(payload?.data?.items)
+        ? payload.data.items
+        : Array.isArray(payload)
+        ? payload
+        : Array.isArray(payload?.items)
+        ? payload.items
+        : [];
       buildSpecialtyFilter(doctors);
       refresh();
     } catch (err) {
       console.error(err);
-      listEl.innerHTML = "<p>Unable to load doctors.</p>";
+      listEl.innerHTML = `<p>${t("doctors_load_error", "Unable to load doctors.")}</p>`;
     }
   }
 

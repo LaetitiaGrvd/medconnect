@@ -2,6 +2,7 @@ from flask import Blueprint, request, session, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.db import get_connection
+from app.routes.utils import success_response, error_response
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -119,10 +120,10 @@ def register():
         missing.append("phone")
 
     if missing:
-        return jsonify({"success": False, "error": "Missing required fields", "missing": missing}), 400
+        return error_response(400, "validation_error", "Missing required fields")
 
     if _find_user_by_email(email):
-        return jsonify({"success": False, "error": "Email already registered"}), 409
+        return error_response(409, "conflict", "Email already registered")
 
     pwd_hash = generate_password_hash(password)
 
@@ -147,7 +148,7 @@ def register():
         conn.commit()
 
     _set_session(user)
-    return jsonify({"success": True, "user": _public_user(user)}), 201
+    return success_response({"user": _public_user(user)}, 201)
 
 
 @auth_bp.post("/api/auth/login")
@@ -159,24 +160,24 @@ def login():
     password = (data.get("password") or "").strip()
 
     if not email or not password:
-        return jsonify({"success": False, "error": "Email and password required"}), 400
+        return error_response(400, "validation_error", "Email and password required")
 
     user = _find_user_by_email(email)
     if not user:
-        return jsonify({"success": False, "error": "Invalid credentials"}), 401
+        return error_response(401, "unauthorized", "Invalid credentials")
 
     stored_hash = user.get("password_hash") or ""
     if not check_password_hash(stored_hash, password):
-        return jsonify({"success": False, "error": "Invalid credentials"}), 401
+        return error_response(401, "unauthorized", "Invalid credentials")
 
     _set_session(user)
-    return jsonify({"success": True, "user": _public_user(user)}), 200
+    return success_response({"user": _public_user(user)})
 
 
 @auth_bp.post("/api/auth/logout")
 def logout():
     session.clear()
-    return jsonify({"success": True}), 200
+    return success_response({})
 
 
 @auth_bp.get("/api/me")
@@ -185,7 +186,7 @@ def me():
 
     user_id = session.get("user_id")
     if not user_id:
-        return jsonify({"success": False, "error": "Unauthorized"}), 401
+        return error_response(401, "unauthorized", "Unauthorized")
 
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -194,6 +195,45 @@ def me():
 
     if not user:
         session.clear()
-        return jsonify({"success": False, "error": "Unauthorized"}), 401
+        return error_response(401, "unauthorized", "Unauthorized")
 
-    return jsonify({"success": True, "user": _public_user(user)}), 200
+    user_payload = _public_user(user)
+    if (user_payload.get("role") or "").strip().lower() == "doctor" and user_payload.get("doctor_id"):
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT full_name, specialty, avatar_url FROM doctors WHERE id = %s LIMIT 1",
+                    (user_payload.get("doctor_id"),),
+                )
+                doctor_row = cur.fetchone()
+        if doctor_row:
+            user_payload["specialty"] = doctor_row.get("specialty")
+            user_payload["avatar_url"] = doctor_row.get("avatar_url")
+            if doctor_row.get("full_name"):
+                user_payload["name"] = doctor_row.get("full_name")
+
+    return success_response({"user": user_payload})
+
+
+@auth_bp.post("/api/auth/forgot-password")
+def forgot_password():
+    data = request.get_json(silent=True) or {}
+
+    email = _norm_email(data.get("email"))
+    phone = (data.get("phone") or "").strip()
+
+    if not email:
+        return error_response(400, "validation_error", "Email is required")
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO password_reset_requests (email, phone)
+                VALUES (%s, %s)
+                """,
+                (email, phone or None),
+            )
+        conn.commit()
+
+    return success_response({"message": "Password reset request received"})

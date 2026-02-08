@@ -1,0 +1,11 @@
+ALTER TABLE doctors
+  ADD COLUMN IF NOT EXISTS bio TEXT;
+
+ALTER TABLE doctors
+  ADD COLUMN IF NOT EXISTS experience TEXT;
+
+ALTER TABLE doctors
+  ADD COLUMN IF NOT EXISTS certifications TEXT;
+
+ALTER TABLE doctors
+  ADD COLUMN IF NOT EXISTS specialisations TEXT;

@@ -3,47 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="labs_title">Lab Services – MedConnect</title>
-
+  <title>Laboratory Tests - MedConnect</title>
   <!-- UIcons -->
   <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
-<!-- CSS -->
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/layout.css">
-<link rel="stylesheet" href="css/pages.css">
-<link rel="stylesheet" href="css/tokens.css">
-
-<!-- JS -->
-<script src="js/i18n.js"></script>
-<script src="js/nav.js"></script>
-<script type="module" src="js/main.js"></script>
-<script src="js/bottom-bar.js"></script>
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-brands/css/uicons-brands.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/labs.css">
 </head>
 <body>
   <!-- Header -->
   <header class="mc-topbar">
     <div class="mc-wrap">
-      <button class="hamburger" aria-label="Open menu">≡</button>
-      <a class="brand" href="index.html">MedConnect</a>
+      <button class="hamburger" aria-label="Open menu">&#8801;</button>
+      <a href="index.html" class="brand">MedConnect</a>
       <div class="lang-switch">
         <button data-lang="en" aria-pressed="true">EN</button>
         <button data-lang="fr" aria-pressed="false">FR</button>
       </div>
     </div>
   </header>
-
-  <!-- Overlay + Side Menu -->
+  <!-- Overlay -->
   <div class="side-menu-overlay" id="sideMenuOverlay" aria-hidden="true"></div>
+  <!-- Side menu as modal navigation drawer -->
   <nav class="side-menu" id="sideMenu" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="sideMenuTitle">
-    <button class="close-btn" id="closeMenu" aria-label="Close menu">×</button>
+    <button class="close-btn" id="closeMenu" aria-label="Close menu">&times;</button>
     <h2 id="sideMenuTitle" class="visually-hidden" data-i18n="nav_menu">Main Menu</h2>
     <ul>
       <li><a href="index.html" data-i18n="nav_home">Home</a></li>
       <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
       <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
       <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
-      <li><a href="pharmacy.html" data-i18n="qa_pharmacy">Pharmacy</a></li>
+      <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
       <li><a href="portal.html" data-i18n="qa_portal">Dashboard</a></li>
       <li><a href="about.html" data-i18n="link_about">About</a></li>
       <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
@@ -52,64 +47,52 @@
       <li><a href="terms.html" data-i18n="terms">Terms of Service</a></li>
     </ul>
   </nav>
-
-  <!-- Main Content -->
-  <main class="labs">
-    <div class="container">
-       <h1 data-i18n="labs_title">Lab Services</h1>
-        <p class="intro" data-i18n="labs_intro">
-        We provide a wide range of diagnostic and preventive lab tests to support your healthcare needs.
-        </p>
-
-        <div class="lab-grid">
-        <article class="lab-card">
-            <h3 data-i18n="lab_blood">Blood Tests</h3>
-            <p data-i18n="lab_blood_desc">Routine and specialized blood analysis for health monitoring.</p>
-            <a href="appointment.html?specialty=lab" class="btn ghost" data-i18n="btn_book_test">Book Test</a>
-        </article>
-
-        <article class="lab-card">
-            <h3 data-i18n="lab_xray">X-Ray</h3>
-            <p data-i18n="lab_xray_desc">Imaging services for bones, chest, and internal diagnostics.</p>
-            <a href="appointment.html?specialty=lab" class="btn ghost" data-i18n="btn_book_test">Book Test</a>
-        </article>
-
-        <article class="lab-card">
-            <h3 data-i18n="lab_covid">COVID-19 Test</h3>
-            <p data-i18n="lab_covid_desc">Rapid and PCR testing for accurate COVID-19 detection.</p>
-            <a href="appointment.html?specialty=lab" class="btn ghost" data-i18n="btn_book_test">Book Test</a>
-        </article>
+  <main class="labs-page">
+    <section class="labs-hero">
+      <div class="container">
+        <h1>Laboratory Tests</h1>
+        <p>Explore our most requested packages. For individual tests, request a quote.</p>
+        <div class="labs-anchors" id="labsAnchors"></div>
+      </div>
+    </section>
+    <section class="labs-section">
+      <div class="container">
+        <div id="labsStatus" class="labs-status">Loading packages...</div>
+        <div id="labsError" class="labs-error hidden">
+          <p id="labsErrorMessage">Unable to load packages.</p>
+          <button type="button" class="labs-retry" id="labsRetry">Retry</button>
         </div>
-
-        <!-- Notices -->
-        <section class="lab-notices">
-        <h2 data-i18n="labs_notice_title">Important Information</h2>
-        <ul>
-            <li data-i18n="labs_notice1">Lab opens Monday–Saturday, 7:00 AM – 6:00 PM.</li>
-            <li data-i18n="labs_notice2">Fasting required for certain blood tests.</li>
-            <li data-i18n="labs_notice3">Results available online via the Dashboard.</li>
-        </ul>
-        </section> 
-    </div>
-    
+        <div id="labsEmpty" class="labs-empty hidden">No packages available at the moment.</div>
+        <div id="labsList" class="labs-list"></div>
+        <div class="labs-cta-block">
+          <div>
+            <h2>Looking for an individual test?</h2>
+            <p>For specialised tests or individual pricing, request a quote.</p>
+          </div>
+          <a class="labs-cta" href="request-quote.html">Request a quote</a>
+        </div>
+        <div class="labs-disclaimer">
+          <p>Prices are indicative and may change.</p>
+          <p>Your doctor may recommend additional tests.</p>
+        </div>
+      </div>
+    </section>
   </main>
-
-  <!-- Bottom nav -->
+  <!-- Bottom Nav -->
   <nav class="mc-bottom-bar" role="navigation" aria-label="Quick actions">
     <a href="appointment.html" class="mc-tab" aria-label="Book an appointment">
       <i class="fi fi-rr-calendar mc-ico"></i>
-      <span class="mc-lbl" data-i18n="cta_book">Book</span>
+      <span class="mc-lbl" data-i18n="btn_book">Book</span>
     </a>
     <a href="doctors.html" class="mc-tab" aria-label="Find a doctor">
       <i class="fi fi-rr-stethoscope mc-ico"></i>
-      <span class="mc-lbl" data-i18n="link_find_doctor">Doctors</span>
+      <span class="mc-lbl" data-i18n="qa_doctors">Doctors</span>
     </a>
     <a href="labs.html" class="mc-tab active" aria-label="Lab services">
       <i class="fi fi-rr-test-tube mc-ico"></i>
-      <span class="mc-lbl" data-i18n="qa_lab">Labs</span>
+      <span class="mc-lbl" data-i18n="qa_lab">Lab Tests</span>
     </a>
   </nav>
-
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-grid">
@@ -123,31 +106,36 @@
         <h3 data-i18n="footer_links">Quick Links</h3>
         <ul>
           <li><a href="index.html#about" data-i18n="link_about">About</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
           <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
           <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
-          <li><a href="labs.html" data-i18n="qa_lab">Labs</a></li>
-          <li><a href="pharmacy.html" data-i18n="qa_pharmacy">Pharmacy</a></li>
+          <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
+          <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h3 data-i18n="footer_follow">Follow Us</h3>
         <div class="footer-socials">
-          <a href="#"><i class="fi fi-rr-facebook"></i></a>
-          <a href="#"><i class="fi fi-rr-linkedin"></i></a>
-          <a href="#"><i class="fi fi-rr-instagram"></i></a>
+          <a href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fi fi-brands-facebook"></i></a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fi fi-brands-linkedin"></i></a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fi fi-brands-instagram"></i></a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
       <p>&copy; 2025 MedConnect. <span data-i18n="rights_reserved">All rights reserved.</span></p>
-      <a href="privacy.html" data-i18n="privacy">Privacy Policy</a> | 
+      <a href="privacy.html" data-i18n="privacy">Privacy Policy</a> |
       <a href="terms.html" data-i18n="terms">Terms of Service</a>
     </div>
   </footer>
-
   <!-- JS -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/bottom-bar.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script src="js/labs.js"></script>
 </body>
 </html>

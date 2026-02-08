@@ -3,30 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="portal_title">Dashboard – MedConnect</title>
+  <title data-i18n="portal_page_title">Patient Portal - MedConnect</title>
 
-  <!-- UIcons -->
   <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
-<!-- CSS -->
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/layout.css">
-<link rel="stylesheet" href="css/pages.css">
-<link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-brands/css/uicons-brands.css">
 
-<!-- JS -->
-<script src="js/config.js"></script>
-<script src="js/i18n.js"></script>
-<script src="js/nav.js"></script>
-<script type="module" src="js/main.js"></script>
-<script src="js/bottom-bar.js"></script>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/tokens.css">
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/nav.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script src="js/bottom-bar.js"></script>
 
 </head>
 <body>
-  <!-- Header -->
   <header class="mc-topbar">
     <div class="mc-wrap">
-      <button class="hamburger" aria-label="Open menu">≡</button>
+      <button class="hamburger" aria-label="Open menu">&#9776;</button>
       <a class="brand" href="index.html">MedConnect</a>
       <div class="lang-switch">
         <button data-lang="en" aria-pressed="true">EN</button>
@@ -35,17 +35,17 @@
     </div>
   </header>
 
-  <!-- Overlay + Side Menu -->
   <div class="side-menu-overlay" id="sideMenuOverlay" aria-hidden="true"></div>
   <nav class="side-menu" id="sideMenu" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="sideMenuTitle">
-    <button class="close-btn" id="closeMenu" aria-label="Close menu">×</button>
+    <button class="close-btn" id="closeMenu" aria-label="Close menu">&times;</button>
     <h2 id="sideMenuTitle" class="visually-hidden" data-i18n="nav_menu">Main Menu</h2>
     <ul>
       <li><a href="index.html" data-i18n="nav_home">Home</a></li>
       <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
       <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
       <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
-      <li><a href="pharmacy.html" data-i18n="qa_pharmacy">Pharmacy</a></li>
+      <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
+
       <li><a href="portal.html" data-i18n="qa_portal">Dashboard</a></li>
       <li><a href="about.html" data-i18n="link_about">About</a></li>
       <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
@@ -55,9 +55,8 @@
     </ul>
   </nav>
 
-  <!-- Main Content -->
   <main class="portal">
-    <h1 data-i18n="portal_title">Dashboard</h1>
+    <h1 data-i18n="portal_title">Patient Portal</h1>
     <p class="intro" data-i18n="portal_intro">
       Access your health records, appointments, and prescriptions securely.
     </p>
@@ -68,7 +67,6 @@
     </div>
 
     <div class="portal-forms">
-      <!-- Login Form -->
       <form id="loginForm" class="portal-form active" data-tab="login">
         <label for="loginEmail" data-i18n="label_email">Email</label>
         <input type="email" id="loginEmail" name="email" required>
@@ -77,9 +75,9 @@
         <input type="password" id="loginPassword" name="password" required>
 
         <button type="submit" class="btn primary" data-i18n="btn_login">Login</button>
+        <button type="button" class="btn ghost" id="forgotBtn">Forgot password?</button>
       </form>
 
-      <!-- Register Form -->
       <form id="registerForm" class="portal-form" data-tab="register">
         <label for="regName" data-i18n="label_name">Full Name</label>
         <input type="text" id="regName" name="name" required>
@@ -87,7 +85,7 @@
         <label for="regEmail" data-i18n="label_email">Email</label>
         <input type="email" id="regEmail" name="email" required>
 
-        <label for="regPhone" data-i18n="label_phone">Phone Number</label>
+        <label for="regPhone" data-i18n="label_phone_number">Phone Number</label>
         <input type="tel" id="regPhone" name="phone" required placeholder="+230 123 4567">
 
         <label for="regPassword" data-i18n="label_password">Password</label>
@@ -98,7 +96,35 @@
     </div>
   </main>
 
-  <!-- Footer -->
+  <div id="forgotModal" class="mc-modal" hidden aria-hidden="true">
+    <div class="mc-modal__overlay" data-close="true"></div>
+
+    <div class="mc-modal__panel" role="dialog" aria-modal="true" aria-labelledby="forgotModalTitle">
+      <button class="mc-modal__close" type="button" aria-label="Close" data-close="true">&times;</button>
+
+      <h2 id="forgotModalTitle">Reset your password</h2>
+      <div class="mc-modal__body">
+        <p>Enter your email and we will contact you to reset your password.</p>
+        <form id="forgotForm" class="dash-form">
+          <div class="dash-form__row">
+            <label for="forgotEmail">Email</label>
+            <input type="email" id="forgotEmail" required>
+          </div>
+          <div class="dash-form__row">
+            <label for="forgotPhone">Phone (optional)</label>
+            <input type="text" id="forgotPhone">
+          </div>
+          <div id="forgotError" class="dash-error" hidden></div>
+        </form>
+      </div>
+
+      <div class="mc-modal__footer">
+        <button type="button" class="btn ghost" data-close="true">Cancel</button>
+        <button type="button" class="btn primary" id="forgotSubmit">Submit</button>
+      </div>
+    </div>
+  </div>
+
   <footer class="footer">
     <div class="footer-grid">
       <div class="footer-col">
@@ -111,34 +137,32 @@
         <h3 data-i18n="footer_links">Quick Links</h3>
         <ul>
           <li><a href="index.html#about" data-i18n="link_about">About</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
           <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
           <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
-          <li><a href="labs.html" data-i18n="qa_lab">Labs</a></li>
-          <li><a href="pharmacy.html" data-i18n="qa_pharmacy">Pharmacy</a></li>
+          <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
+          <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h3 data-i18n="footer_follow">Follow Us</h3>
         <div class="footer-socials">
-          <a href="#"><i class="fi fi-rr-facebook"></i></a>
-          <a href="#"><i class="fi fi-rr-linkedin"></i></a>
-          <a href="#"><i class="fi fi-rr-instagram"></i></a>
+          <a href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fi fi-brands-facebook"></i></a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fi fi-brands-linkedin"></i></a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fi fi-brands-instagram"></i></a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
       <p>&copy; 2025 MedConnect. <span data-i18n="rights_reserved">All rights reserved.</span></p>
-      <a href="privacy.html" data-i18n="privacy">Privacy Policy</a> | 
+      <a href="privacy.html" data-i18n="privacy">Privacy Policy</a> |
       <a href="terms.html" data-i18n="terms">Terms of Service</a>
     </div>
   </footer>
 
-  <!-- JS -->
-<script src="js/portal.js"></script>
-
+  <script src="js/portal.js"></script>
 
   <script>
-    // Portal tab toggle
     document.addEventListener("DOMContentLoaded", () => {
       const tabBtns = document.querySelectorAll(".tab-btn");
       const forms = document.querySelectorAll(".portal-form");
@@ -160,3 +184,13 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

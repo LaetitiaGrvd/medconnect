@@ -6,11 +6,12 @@
    TOPBAR
 -------------------- */
 .mc-topbar {
-  background: #fff;
-  border-bottom: 1px solid #eee;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 1000;
+  box-shadow: 0 4px 14px rgba(17, 24, 39, 0.06);
 }
 
 .mc-topbar .mc-wrap {
@@ -24,7 +25,7 @@
 .mc-topbar .brand {
   font-size: 1.5rem;
   font-weight: var(--font-weight-bold);
-  color: var(--color-accent);
+  color: var(--primary);
   text-decoration: none;
 }
 
@@ -34,13 +35,14 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--color-accent);
+  color: var(--primary);
 }
 
 /* Language switch */
 .lang-switch {
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
 .lang-switch button {
@@ -48,11 +50,39 @@
   background: transparent;
   cursor: pointer;
   font-weight: var(--font-weight-bold);
-  color: var(--color-accent);
+  color: var(--primary);
 }
 
 .lang-switch button[aria-pressed="true"] {
   text-decoration: underline;
+}
+
+.lang-switch .mc-user-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 2px;
+  border-radius: 8px;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.lang-switch .mc-user-link i {
+  font-size: 0.95rem;
+  color: var(--primary);
+}
+
+.lang-switch .mc-user-link:hover {
+  color: var(--primary);
+  background: rgba(29, 78, 216, 0.06);
+}
+
+.lang-switch .mc-user-link:focus-visible {
+  outline: 2px solid rgba(29, 78, 216, 0.35);
+  outline-offset: 2px;
 }
 
 /* --------------------
@@ -109,11 +139,11 @@
   z-index: 60;
   display: flex;
   justify-content: space-around;
-  background: var(--color-bg);
-  border-top: 1px solid var(--color-muted);
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
   height: calc(var(--bar-h) + env(safe-area-inset-bottom));
   padding: 6px 4px calc(6px + env(safe-area-inset-bottom)) 4px;
-  box-shadow: 0 -4px 12px rgba(0,0,0,.06);
+  box-shadow: 0 -6px 16px rgba(17, 24, 39, 0.08);
 }
 
 /* Each tab */
@@ -129,7 +159,7 @@
   justify-content: center;
   border-radius: var(--radius);
   padding: 6px 4px;
-  transition: background 0.2s, color 0.2s, transform 0.1s;
+  transition: background 0.2s, color 0.2s, transform 0.1s, box-shadow 0.2s;
 }
 
 /* Icon inside tab */
@@ -146,25 +176,25 @@
 
 /* Hover (mouse over) */
 .mc-tab:hover {
-  background: #f0f4ff;
-  color: var(--color-accent);
+  background: rgba(29, 78, 216, 0.08);
+  color: var(--primary);
 }
 
 /* Focus (keyboard navigation) */
 .mc-tab:focus {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
 /* Active (while pressing) */
 .mc-tab:active {
-  background: #e0e7ff;
+  background: rgba(29, 78, 216, 0.14);
   transform: scale(0.97);
 }
 
 /* Selected/active tab (after click) */
 .mc-tab.active {
-  color: var(--color-accent);
+  color: var(--primary);
   font-weight: var(--font-weight-bold);
 }
 
@@ -198,8 +228,8 @@ main, .page {
 }
 
 .lang-switch button {
-  border: 1px solid var(--color-muted);
-  background: var(--color-bg);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
   padding: 4px 10px;
   border-radius: var(--radius);
   font-size: 14px;
@@ -209,27 +239,27 @@ main, .page {
 
 /* Hover */
 .lang-switch button:hover {
-  background: #f0f4ff;
-  color: var(--color-accent);
+  background: rgba(29, 78, 216, 0.08);
+  color: var(--primary);
 }
 
 /* Focus (keyboard navigation) */
 .lang-switch button:focus {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
 /* Active (while pressing) */
 .lang-switch button:active {
-  background: #e0e7ff;
+  background: rgba(29, 78, 216, 0.14);
   transform: scale(0.96);
 }
 
 /* Selected/active language */
 .lang-switch button[aria-pressed="true"] {
-  background: var(--color-accent);
+  background: var(--primary);
   color: #fff;
-  border-color: var(--color-accent);
+  border-color: var(--primary);
   font-weight: var(--font-weight-bold);
 }
 
@@ -243,8 +273,8 @@ main, .page {
   left: -300px; /* hide menu fully (wider than 260px) */
   width: 260px;
   height: 100%;
-  background: #fff;
-  box-shadow: 2px 0 6px rgba(0,0,0,0.2);
+  background: var(--bg-card);
+  box-shadow: 2px 0 16px rgba(17, 24, 39, 0.16);
   padding: var(--spacing-4) var(--spacing-3);
   transition: left 0.3s ease;
   z-index: 2000;
@@ -278,14 +308,14 @@ main, .page {
 .side-menu a {
   text-decoration: none;
   font-weight: var(--font-weight-bold);
-  color: var(--color-accent);
+  color: var(--primary);
   display: block;
   padding: 8px 0;
   transition: color 0.2s;
 }
 
 .side-menu a:hover {
-  color: #0018b8;
+  color: var(--primary-strong);
 }
 
 /* Hide visually but keep for screen readers */

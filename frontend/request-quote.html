@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Request Quote - MedConnect</title>
+  <!-- UIcons -->
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-brands/css/uicons-brands.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/request-quote.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="mc-topbar">
+    <div class="mc-wrap">
+      <button class="hamburger" aria-label="Open menu">≡</button>
+      <a href="index.html" class="brand">MedConnect</a>
+      <div class="lang-switch">
+        <button data-lang="en" aria-pressed="true">EN</button>
+        <button data-lang="fr" aria-pressed="false">FR</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Overlay -->
+  <div class="side-menu-overlay" id="sideMenuOverlay" aria-hidden="true"></div>
+
+  <!-- Side menu as modal navigation drawer -->
+  <nav class="side-menu" id="sideMenu" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="sideMenuTitle">
+    <button class="close-btn" id="closeMenu" aria-label="Close menu">×</button>
+    <h2 id="sideMenuTitle" class="visually-hidden" data-i18n="nav_menu">Main Menu</h2>
+    <ul>
+      <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+      <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
+      <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
+      <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
+      <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
+
+      <li><a href="portal.html" data-i18n="qa_portal">Dashboard</a></li>
+      <li><a href="about.html" data-i18n="link_about">About</a></li>
+      <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+      <li><a href="notices.html" data-i18n="nav_notices">Notices</a></li>
+      <li><a href="privacy.html" data-i18n="privacy">Privacy Policy</a></li>
+      <li><a href="terms.html" data-i18n="terms">Terms of Service</a></li>
+    </ul>
+  </nav>
+
+  <main class="rq-page">
+    <div class="container">
+      <div class="rq-header">
+        <h1>Request a Quote</h1>
+        <p class="rq-intro">Tell us about the services you need and we'll get back with pricing.</p>
+      </div>
+      <div class="rq-container">
+        <div id="quoteSuccess" class="rq-banner" hidden>Request submitted successfully.</div>
+        <div id="quoteError" class="rq-banner rq-banner--error" hidden></div>
+
+        <form id="quoteForm" novalidate>
+          <div class="rq-section">
+            <div class="rq-grid">
+              <div class="rq-field">
+                <label class="rq-label">Name *</label>
+                <div class="rq-name-grid">
+                  <div class="rq-field">
+                    <input
+                      type="text"
+                      id="firstName"
+                      name="first_name"
+                      placeholder="First name"
+                      data-clear-for="first_name"
+                      required
+                    />
+                    <div class="rq-error" data-error-for="first_name" hidden></div>
+                  </div>
+                  <div class="rq-field">
+                    <input
+                      type="text"
+                      id="lastName"
+                      name="last_name"
+                      placeholder="Last name"
+                      data-clear-for="last_name"
+                      required
+                    />
+                    <div class="rq-error" data-error-for="last_name" hidden></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rq-field">
+                <label class="rq-label" for="gender">Gender *</label>
+                <select id="gender" name="gender" data-clear-for="gender" required>
+                  <option value="">Select</option>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Other">Other</option>
+                </select>
+                <div class="rq-error" data-error-for="gender" hidden></div>
+              </div>
+
+              <div class="rq-placeholder"></div>
+            </div>
+
+            <div class="rq-grid rq-section">
+              <div class="rq-field">
+                <label class="rq-label" for="dob">Date of birth *</label>
+                <input type="date" id="dob" name="dob" data-clear-for="dob" required />
+                <div class="rq-error" data-error-for="dob" hidden></div>
+              </div>
+              <div class="rq-field">
+                <label class="rq-label" for="phone">Phone number *</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="+1 (000) 000-0000"
+                  data-clear-for="phone"
+                  required
+                />
+                <div class="rq-error" data-error-for="phone" hidden></div>
+              </div>
+              <div class="rq-field">
+                <label class="rq-label" for="email">Email *</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  data-clear-for="email"
+                  required
+                />
+                <div class="rq-error" data-error-for="email" hidden></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rq-section">
+            <div class="rq-grid">
+              <div class="rq-field">
+                <label class="rq-label">Service Category *</label>
+                <div class="rq-checkbox-list">
+                  <label>
+                    <input type="checkbox" name="service_categories" value="General Consultation" data-clear-for="service_categories" />
+                    <span>General Consultation</span>
+                  </label>
+                  <label>
+                    <input type="checkbox" name="service_categories" value="Dental Services" data-clear-for="service_categories" />
+                    <span>Dental Services</span>
+                  </label>
+                  <label>
+                    <input type="checkbox" name="service_categories" value="Specialist Appointment" data-clear-for="service_categories" />
+                    <span>Specialist Appointment</span>
+                  </label>
+                  <label>
+                    <input type="checkbox" name="service_categories" value="Diagnostic Tests" data-clear-for="service_categories" />
+                    <span>Diagnostic Tests</span>
+                  </label>
+                  <label>
+                    <input type="checkbox" name="service_categories" value="Preventive Care" data-clear-for="service_categories" />
+                    <span>Preventive Care</span>
+                  </label>
+                  <label>
+                    <input type="checkbox" name="service_categories" value="Home Care Services" data-clear-for="service_categories" />
+                    <span>Home Care Services</span>
+                  </label>
+                  <label>
+                    <input type="checkbox" name="service_categories" value="Wellness Programs" data-clear-for="service_categories" />
+                    <span>Wellness Programs</span>
+                  </label>
+                  <label>
+                    <input type="checkbox" name="service_categories" value="Other" data-clear-for="service_categories" />
+                    <span>Other</span>
+                  </label>
+                </div>
+                <div class="rq-error" data-error-for="service_categories" hidden></div>
+              </div>
+
+              <div class="rq-field">
+                <label class="rq-label" for="doctorSelect">Preferred Doctor</label>
+                <select id="doctorSelect" name="doctor_id" data-clear-for="doctor_id">
+                  <option value="">Select a doctor</option>
+                </select>
+                <div class="rq-error" data-error-for="doctor_id" hidden></div>
+              </div>
+
+              <div class="rq-field">
+                <label class="rq-label" for="message">Message *</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  placeholder="Tell us what you need"
+                  data-clear-for="message"
+                  required
+                ></textarea>
+                <div class="rq-error" data-error-for="message" hidden></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rq-section">
+            <div class="rq-upload-block">
+              <label class="rq-label">Supporting Documents</label>
+              <div class="rq-drop" id="documentsDrop">
+                <div>Drop files here or</div>
+                <button type="button" class="rq-upload-btn" id="documentsUploadBtn">Upload files</button>
+                <input
+                  type="file"
+                  id="documentsInput"
+                  name="documents[]"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  multiple
+                  hidden
+                />
+              </div>
+              <div class="rq-helper">
+                Accepted file types: pdf, jpg, jpeg, png. Max file size: 5 MB.
+              </div>
+              <div class="rq-file-list" id="documentsList"></div>
+              <div class="rq-error" data-error-for="documents" hidden></div>
+            </div>
+
+            <div class="rq-upload-block">
+              <label class="rq-label">Identity Document *</label>
+              <div class="rq-drop" id="idDocumentDrop">
+                <div>Drop files here or</div>
+                <button type="button" class="rq-upload-btn" id="idUploadBtn">Upload files</button>
+                <input
+                  type="file"
+                  id="idDocumentInput"
+                  name="id_document"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  hidden
+                />
+              </div>
+              <div class="rq-helper">
+                Accepted file types: pdf, jpg, jpeg, png. Max file size: 5 MB.
+              </div>
+              <div class="rq-file-list" id="idList"></div>
+              <div class="rq-error" data-error-for="id_document" hidden></div>
+            </div>
+          </div>
+
+          <div class="rq-section">
+            <div class="rq-field">
+              <label class="rq-label">Consent *</label>
+              <div class="rq-consent-row">
+                <input type="checkbox" id="consent" name="consent" data-clear-for="consent" />
+                <label for="consent">I agree to the privacy policy.</label>
+              </div>
+              <div class="rq-error" data-error-for="consent" hidden></div>
+            </div>
+          </div>
+
+          <button type="submit" class="rq-submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="mc-bottom-bar" role="navigation" aria-label="Quick actions">
+    <a href="appointment.html" class="mc-tab" aria-label="Book an appointment">
+      <i class="fi fi-rr-calendar mc-ico"></i>
+      <span class="mc-lbl" data-i18n="btn_book">Book</span>
+    </a>
+    <a href="doctors.html" class="mc-tab" aria-label="Find a doctor">
+      <i class="fi fi-rr-stethoscope mc-ico"></i>
+      <span class="mc-lbl" data-i18n="qa_doctors">Doctors</span>
+    </a>
+    <a href="labs.html" class="mc-tab" aria-label="Lab services">
+      <i class="fi fi-rr-test-tube mc-ico"></i>
+      <span class="mc-lbl" data-i18n="qa_lab">Lab Tests</span>
+    </a>
+  </nav>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3 data-i18n="footer_contact">Contact</h3>
+        <p><i class="fi fi-rr-phone-call"></i> +230 123 4567</p>
+        <p><i class="fi fi-rr-envelope"></i> info@medconnect.mu</p>
+        <p><i class="fi fi-rr-marker"></i> 123 Health St, Quatre Bornes</p>
+      </div>
+      <div class="footer-col">
+        <h3 data-i18n="footer_links">Quick Links</h3>
+        <ul>
+          <li><a href="index.html#about" data-i18n="link_about">About</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+          <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
+          <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
+          <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
+          <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3 data-i18n="footer_follow">Follow Us</h3>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fi fi-brands-facebook"></i></a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fi fi-brands-linkedin"></i></a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fi fi-brands-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 MedConnect. <span data-i18n="rights_reserved">All rights reserved.</span></p>
+      <a href="privacy.html" data-i18n="privacy">Privacy Policy</a> |
+      <a href="terms.html" data-i18n="terms">Terms of Service</a>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/bottom-bar.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script src="js/request-quote.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+

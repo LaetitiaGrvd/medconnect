@@ -1,6 +1,9 @@
-
 # backend/availability.py
+import json
 from flask import Blueprint, jsonify, request
+
+from app.db import get_connection
+from app.routes.utils import success_response, error_response
 
 availability_bp = Blueprint("availability", __name__)
 
@@ -19,7 +22,8 @@ DEFAULT_WEEKLY_SCHEDULE = {
     "sun": [],
 }
 
-VALID_DAYS = {"mon", "tue", "wed", "thu", "fri", "sat", "sun"}
+DAY_ORDER = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+VALID_DAYS = set(DAY_ORDER)
 
 
 def _is_valid_window(s: str) -> bool:
@@ -58,9 +62,45 @@ def _validate_schedule(data: dict):
 def get_availability(doctor_id):
     schedule = DOCTOR_AVAILABILITY.get(str(doctor_id))
     if schedule is None:
-        # Don’t auto-save default; just return it
-        schedule = DEFAULT_WEEKLY_SCHEDULE
-    return jsonify({"doctor_id": str(doctor_id), "weekly": schedule})
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT availability_days, availability_start, availability_end
+                    FROM doctors
+                    WHERE id = %s
+                    LIMIT 1
+                    """,
+                    (doctor_id,),
+                )
+                row = cur.fetchone()
+
+        if not row:
+            return error_response(404, "not_found", "Doctor not found")
+
+        raw_days = row.get("availability_days")
+        days = []
+        if isinstance(raw_days, list):
+            days = [str(d).strip().lower() for d in raw_days if str(d).strip()]
+        else:
+            try:
+                parsed = json.loads(raw_days or "[]")
+                if isinstance(parsed, list):
+                    days = [str(d).strip().lower() for d in parsed if str(d).strip()]
+            except Exception:
+                days = []
+
+        start = row.get("availability_start")
+        end = row.get("availability_end")
+        start_str = start.strftime("%H:%M") if hasattr(start, "strftime") else str(start or "")[:5]
+        end_str = end.strftime("%H:%M") if hasattr(end, "strftime") else str(end or "")[:5]
+
+        window = f"{start_str}-{end_str}" if start_str and end_str else None
+        schedule = {}
+        for day in DAY_ORDER:
+            schedule[day] = [window] if window and day in days else []
+
+    return success_response({"doctor_id": str(doctor_id), "weekly": schedule})
 
 
 @availability_bp.put("/api/doctors/<doctor_id>/availability")
@@ -70,7 +110,7 @@ def put_availability(doctor_id):
 
     err = _validate_schedule(weekly)
     if err:
-        return jsonify({"error": err}), 400
+        return error_response(400, "validation_error", err)
 
     DOCTOR_AVAILABILITY[str(doctor_id)] = weekly
-    return jsonify({"ok": True, "doctor_id": str(doctor_id), "weekly": weekly})
+    return success_response({"doctor_id": str(doctor_id), "weekly": weekly})

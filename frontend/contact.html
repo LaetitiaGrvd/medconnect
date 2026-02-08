@@ -3,29 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="contact_title">Contact Us – MedConnect</title>
+  <title>Contact Us - MedConnect</title>
 
   <!-- UIcons -->
   <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
-<!-- CSS -->
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/layout.css">
-<link rel="stylesheet" href="css/pages.css">
-<link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-brands/css/uicons-brands.css">
 
-<!-- JS -->
-<script src="js/i18n.js"></script>
-<script src="js/nav.js"></script>
-<script type="module" src="js/main.js"></script>
-<script src="js/bottom-bar.js"></script>
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/contact.css">
 </head>
 <body>
   <!-- Header -->
   <header class="mc-topbar">
     <div class="mc-wrap">
       <button class="hamburger" aria-label="Open menu">≡</button>
-      <a class="brand" href="index.html">MedConnect</a>
+      <a href="index.html" class="brand">MedConnect</a>
       <div class="lang-switch">
         <button data-lang="en" aria-pressed="true">EN</button>
         <button data-lang="fr" aria-pressed="false">FR</button>
@@ -33,8 +30,10 @@
     </div>
   </header>
 
-  <!-- Overlay + Side Menu -->
+  <!-- Overlay -->
   <div class="side-menu-overlay" id="sideMenuOverlay" aria-hidden="true"></div>
+
+  <!-- Side menu as modal navigation drawer -->
   <nav class="side-menu" id="sideMenu" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="sideMenuTitle">
     <button class="close-btn" id="closeMenu" aria-label="Close menu">×</button>
     <h2 id="sideMenuTitle" class="visually-hidden" data-i18n="nav_menu">Main Menu</h2>
@@ -43,7 +42,7 @@
       <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
       <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
       <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
-      <li><a href="pharmacy.html" data-i18n="qa_pharmacy">Pharmacy</a></li>
+      <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
       <li><a href="portal.html" data-i18n="qa_portal">Dashboard</a></li>
       <li><a href="about.html" data-i18n="link_about">About</a></li>
       <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
@@ -53,41 +52,96 @@
     </ul>
   </nav>
 
-  <!-- Main Content -->
-  <main class="contact">
-    <h1 data-i18n="contact_title">Contact Us</h1>
-    <p class="intro" data-i18n="contact_intro">
-      Have questions or need assistance? Get in touch with us using the form below or via our contact details.
-    </p>
-
-    <div class="contact-grid">
-      <!-- Contact Form -->
-      <form id="contactForm" class="contact-form">
-        <label for="name" data-i18n="label_name">Full Name</label>
-        <input type="text" id="name" name="name" required>
-
-        <label for="email" data-i18n="label_email">Email</label>
-        <input type="email" id="email" name="email" required>
-
-        <label for="phone" data-i18n="label_phone">Phone</label>
-        <input type="tel" id="phone" name="phone" placeholder="+230 123 4567">
-
-        <label for="message" data-i18n="label_message">Message</label>
-        <textarea id="message" name="message" rows="5" required></textarea>
-
-        <button type="submit" class="btn primary" data-i18n="btn_send">Send Message</button>
-      </form>
-
-      <!-- Contact Info -->
-      <div class="contact-info">
-        <h2 data-i18n="contact_info">Our Contact Details</h2>
-        <p><i class="fi fi-rr-phone-call"></i> +230 123 4567</p>
-        <p><i class="fi fi-rr-envelope"></i> info@medconnect.mu</p>
-        <p><i class="fi fi-rr-marker"></i> 123 Health St, Quatre Bornes</p>
-        <p><i class="fi fi-rr-clock"></i> Mon–Sat: 8:00 AM – 6:00 PM</p>
+  <main class="contact-page">
+    <section class="contact-hero">
+      <div class="container">
+        <h1 data-i18n="contact_title">Contact Us</h1>
+        <p data-i18n="contact_intro">Please enter your details and we'll get back to you.</p>
       </div>
-    </div>
+    </section>
+
+    <section class="contact-card-wrap">
+      <div class="contact-card">
+        <div id="contactSuccess" class="contact-banner" hidden>Message sent successfully.</div>
+        <div id="contactError" class="contact-banner contact-banner--error" hidden></div>
+
+        <form id="contactForm" novalidate>
+          <div class="form-group">
+            <label for="contactType">Type *</label>
+            <select id="contactType" name="type" data-clear-for="type" required>
+              <option value="">Select type of enquiry</option>
+              <option value="General enquiry">General enquiry</option>
+              <option value="Billing">Billing</option>
+              <option value="Appointment support">Appointment support</option>
+              <option value="Technical issue">Technical issue</option>
+              <option value="Feedback">Feedback</option>
+              <option value="Other">Other</option>
+            </select>
+            <div class="contact-error" data-error-for="type"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="firstName">First name *</label>
+            <input type="text" id="firstName" name="first_name" data-clear-for="first_name" required />
+            <div class="contact-error" data-error-for="first_name"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last name *</label>
+            <input type="text" id="lastName" name="last_name" data-clear-for="last_name" required />
+            <div class="contact-error" data-error-for="last_name"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" data-clear-for="email" required />
+            <div class="contact-error" data-error-for="email"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone number *</label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 (000) 000-0000" data-clear-for="phone" required />
+            <div class="contact-error" data-error-for="phone"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea id="message" name="message" data-clear-for="message" required></textarea>
+            <div class="contact-error" data-error-for="message"></div>
+          </div>
+
+          <div class="form-group">
+            <label>Consent *</label>
+            <div class="checkbox-row">
+              <input type="checkbox" id="consent" name="consent" data-clear-for="consent" />
+              <label for="consent" class="checkbox-label">I agree to the privacy policy.</label>
+            </div>
+            <div class="contact-error" data-error-for="consent"></div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="contact-submit">Submit</button>
+          </div>
+        </form>
+      </div>
+    </section>
   </main>
+
+  <!-- Bottom Nav -->
+  <nav class="mc-bottom-bar" role="navigation" aria-label="Quick actions">
+    <a href="appointment.html" class="mc-tab" aria-label="Book an appointment">
+      <i class="fi fi-rr-calendar mc-ico"></i>
+      <span class="mc-lbl" data-i18n="btn_book">Book</span>
+    </a>
+    <a href="doctors.html" class="mc-tab" aria-label="Find a doctor">
+      <i class="fi fi-rr-stethoscope mc-ico"></i>
+      <span class="mc-lbl" data-i18n="qa_doctors">Doctors</span>
+    </a>
+    <a href="labs.html" class="mc-tab" aria-label="Lab services">
+      <i class="fi fi-rr-test-tube mc-ico"></i>
+      <span class="mc-lbl" data-i18n="qa_lab">Lab Tests</span>
+    </a>
+  </nav>
 
   <!-- Footer -->
   <footer class="footer">
@@ -102,37 +156,43 @@
         <h3 data-i18n="footer_links">Quick Links</h3>
         <ul>
           <li><a href="index.html#about" data-i18n="link_about">About</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
           <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
           <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
-          <li><a href="labs.html" data-i18n="qa_lab">Labs</a></li>
-          <li><a href="pharmacy.html" data-i18n="qa_pharmacy">Pharmacy</a></li>
+          <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
+          <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h3 data-i18n="footer_follow">Follow Us</h3>
         <div class="footer-socials">
-          <a href="#"><i class="fi fi-rr-facebook"></i></a>
-          <a href="#"><i class="fi fi-rr-linkedin"></i></a>
-          <a href="#"><i class="fi fi-rr-instagram"></i></a>
+          <a href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fi fi-brands-facebook"></i></a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fi fi-brands-linkedin"></i></a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fi fi-brands-instagram"></i></a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
       <p>&copy; 2025 MedConnect. <span data-i18n="rights_reserved">All rights reserved.</span></p>
-      <a href="privacy.html" data-i18n="privacy">Privacy Policy</a> | 
+      <a href="privacy.html" data-i18n="privacy">Privacy Policy</a> |
       <a href="terms.html" data-i18n="terms">Terms of Service</a>
     </div>
   </footer>
 
   <!-- JS -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/nav.js"></script>
-  <script>
-    // Simple mock form handler
-    document.getElementById("contactForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      alert("Your message has been sent! (Demo only)");
-    });
-  </script>
+  <script src="js/bottom-bar.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script src="js/contact.js"></script>
 </body>
 </html>
+
+
+
+
+
+

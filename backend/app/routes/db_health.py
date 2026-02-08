@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify
 from app.db import get_connection
+from app.routes.utils import success_response
 
 db_health_bp = Blueprint("db_health", __name__)
 
@@ -10,4 +11,4 @@ def db_health():
         with conn.cursor() as cur:
             cur.execute("SELECT 1 AS ok;")
             row = cur.fetchone()
-    return jsonify({"ok": True, "db": row}), 200
+    return success_response({"ok": True, "db": row})

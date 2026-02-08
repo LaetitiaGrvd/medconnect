@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="dashboard_title">Dashboard – MedConnect</title>
+  <title data-i18n="dashboard_page_title">Dashboard - MedConnect</title>
 
   <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-brands/css/uicons-brands.css">
 
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
@@ -17,7 +18,7 @@
 <body>
   <header class="mc-topbar">
     <div class="mc-wrap">
-      <button class="hamburger" aria-label="Open menu">≡</button>
+      <button class="hamburger" aria-label="Open menu">&#9776;</button>
       <a class="brand" href="index.html">MedConnect</a>
       <div class="lang-switch">
         <button data-lang="en" aria-pressed="true">EN</button>
@@ -28,14 +29,14 @@
 
   <div class="side-menu-overlay" id="sideMenuOverlay" aria-hidden="true"></div>
   <nav class="side-menu" id="sideMenu" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="sideMenuTitle">
-    <button class="close-btn" id="closeMenu" aria-label="Close menu">×</button>
+    <button class="close-btn" id="closeMenu" aria-label="Close menu">&times;</button>
     <h2 id="sideMenuTitle" class="visually-hidden" data-i18n="nav_menu">Main Menu</h2>
     <ul>
       <li><a href="index.html" data-i18n="nav_home">Home</a></li>
       <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
       <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
       <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
-      <li><a href="pharmacy.html" data-i18n="qa_pharmacy">Pharmacy</a></li>
+      <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
 
       <li><a href="portal.html" data-i18n="nav_portal">Login</a></li>
       <li><a href="dashboard.html" data-i18n="qa_dashboard">Dashboard</a></li>
@@ -49,86 +50,47 @@
   </nav>
 
   <main class="dashboard">
-    <h1 data-i18n="dashboard_title">Dashboard</h1>
+    <div class="dash-shell">
+      <aside class="dash-sidebar" id="dashSidebar">
+        <div class="dash-sidebar__header">
+          <h2 class="dash-sidebar__title" data-i18n="dashboard_title">Dashboard</h2>
+          <p class="dash-sidebar__sub" id="dashSidebarRole">Signed in</p>
+        </div>
+        <nav class="dash-nav" aria-label="Dashboard">
+          <ul id="dashNav"></ul>
+        </nav>
+      </aside>
 
-    <div class="dash-meta">
-      <p class="dash-user">Welcome, <span id="dashName">...</span></p>
+      <section class="dash-body">
+        <div class="dash-topbar">
+          <div class="dash-topbar__user">
+            <span class="dash-name" id="dashName">...</span>
+            <span class="dash-role" id="dashRole">...</span>
+          </div>
+          <button class="btn ghost" id="logoutBtn">Logout</button>
+        </div>
 
-      <div class="dash-actions" style="display:flex; gap:10px; align-items:center;">
-        <span class="dash-role" id="dashRole">...</span>
-        <a href="#" class="btn ghost" id="logoutBtn">Logout</a>
-      </div>
+        <div class="dash-content" id="dashContent">
+          <p class="intro" id="dashIntro" data-i18n="dashboard_intro">Loading your dashboard...</p>
+          <div id="dashGlobalLoading" class="dash-loading" data-i18n="loading">Loading...</div>
+          <div id="dashGlobalError" class="dash-error hidden"></div>
+          <div id="dashGlobalEmpty" class="dash-empty hidden"></div>
+          <div id="dashModuleRoot"></div>
+        </div>
+      </section>
     </div>
-
-    <p class="intro" id="dashIntro" data-i18n="dashboard_intro">
-      Loading your dashboard…
-    </p>
-
-    <section class="dash-section" aria-labelledby="dashApptTitle">
-      <h2 id="dashApptTitle" data-i18n="dashboard_appointments">Appointments</h2>
-
-      <div id="dashApptLoading" class="dash-loading" data-i18n="loading">
-        Loading...
-      </div>
-
-      <div id="dashApptEmpty" class="dash-empty" hidden data-i18n="dashboard_no_appointments">
-        No appointments to display.
-      </div>
-
-      <div class="table-wrap" id="dashApptTableWrap" hidden>
-        <table class="mc-table">
-          <thead>
-            <tr>
-              <th data-i18n="th_date">Date</th>
-              <th data-i18n="th_time">Time</th>
-              <th data-i18n="th_name">Name</th>
-              <th data-i18n="th_phone">Phone</th>
-              <th data-i18n="th_status">Status</th>
-              <th data-i18n="th_action">Action</th>
-            </tr>
-          </thead>
-          <tbody id="dashApptTbody"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="dash-section" aria-labelledby="dashReportsTitle">
-      <h2 id="dashReportsTitle" data-i18n="dashboard_reports">Lab Reports</h2>
-
-      <div id="dashRepLoading" class="dash-loading" data-i18n="loading">
-        Loading...
-      </div>
-
-      <div id="dashRepEmpty" class="dash-empty" hidden data-i18n="dashboard_no_reports">
-        No lab reports to display.
-      </div>
-
-      <div class="table-wrap" id="dashRepTableWrap" hidden>
-        <table class="mc-table">
-          <thead>
-            <tr>
-              <th data-i18n="th_uploaded">Uploaded</th>
-              <th data-i18n="th_type">Type</th>
-              <th data-i18n="th_patient">Patient</th>
-              <th data-i18n="th_file">File</th>
-            </tr>
-          </thead>
-          <tbody id="dashRepTbody"></tbody>
-        </table>
-      </div>
-    </section>
   </main>
 
-  <div id="apptModal" class="mc-modal" hidden aria-hidden="true">
+  <div id="dashModal" class="mc-modal hidden" aria-hidden="true">
     <div class="mc-modal__overlay" data-close="true"></div>
 
-    <div class="mc-modal__panel" role="dialog" aria-modal="true" aria-labelledby="apptModalTitle">
-      <button class="mc-modal__close" type="button" aria-label="Close" data-close="true">×</button>
+    <div class="mc-modal__panel" role="dialog" aria-modal="true" aria-labelledby="dashModalTitle">
+      <button class="mc-modal__close" type="button" aria-label="Close" data-close="true">&times;</button>
 
-      <h2 id="apptModalTitle">Appointment details</h2>
-      <div id="apptModalBody" class="mc-modal__body"></div>
+      <h2 id="dashModalTitle">Details</h2>
+      <div id="dashModalBody" class="mc-modal__body"></div>
 
-      <div class="mc-modal__footer">
+      <div class="mc-modal__footer" id="dashModalFooter">
         <button type="button" class="btn ghost" data-close="true">Close</button>
       </div>
     </div>
@@ -146,18 +108,19 @@
         <h3 data-i18n="footer_links">Quick Links</h3>
         <ul>
           <li><a href="index.html#about" data-i18n="link_about">About</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
           <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
           <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
-          <li><a href="labs.html" data-i18n="qa_lab">Labs</a></li>
-          <li><a href="pharmacy.html" data-i18n="qa_pharmacy">Pharmacy</a></li>
+          <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
+          <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h3 data-i18n="footer_follow">Follow Us</h3>
         <div class="footer-socials">
-          <a href="#"><i class="fi fi-rr-facebook"></i></a>
-          <a href="#"><i class="fi fi-rr-linkedin"></i></a>
-          <a href="#"><i class="fi fi-rr-instagram"></i></a>
+          <a href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fi fi-brands-facebook"></i></a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fi fi-brands-linkedin"></i></a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fi fi-brands-instagram"></i></a>
         </div>
       </div>
     </div>
@@ -169,9 +132,25 @@
   </footer>
 
   <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/bottom-bar.js"></script>
+  <script src="js/dashboards/doctor.js"></script>
+  <script src="js/dashboards/adminQuoteRequests.js"></script>
+  <script src="js/dashboards/admin.js"></script>
   <script src="js/dashboard.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

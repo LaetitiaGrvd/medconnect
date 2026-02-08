@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-brands/css/uicons-brands.css">
   <title>MedConnect</title>
   <!-- CSS -->
   <link rel="stylesheet" href="css/base.css">
@@ -16,6 +17,8 @@
   <script src="js/i18n.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
   <script type="module" src="js/main.js"></script>
   <script src="js/bottom-bar.js"></script>
 </head>
@@ -45,7 +48,8 @@
     <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
     <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
     <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
-    <li><a href="pharmacy.html" data-i18n="qa_pharmacy">Pharmacy</a></li>
+    <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
+
     <li><a href="portal.html" data-i18n="qa_portal">Dashboard</a></li>
     <li><a href="about.html" data-i18n="link_about">About</a></li>
     <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
@@ -91,9 +95,13 @@
         <i class="fi fi-rr-test-tube qa-ico"></i>
         <span class="qa-title" data-i18n="qa_lab">Lab Tests</span>
       </a>
-      <a href="pharmacy.html" class="qa-card">
-        <i class="fi fi-rr-capsules qa-ico"></i>
-        <span class="qa-title" data-i18n="qa_pharmacy">Pharmacy</span>
+      <a href="request-quote.html" class="qa-card">
+        <i class="fi fi-rr-file-invoice qa-ico"></i>
+        <span class="qa-title" data-i18n="qa_request_quote">Request Quote</span>
+      </a>
+      <a href="contact.html" class="qa-card">
+        <i class="fi fi-rr-envelope qa-ico"></i>
+        <span class="qa-title" data-i18n="nav_contact">Contact</span>
       </a>
       <a href="portal.html" class="qa-card full">
         <i class="fi fi-rr-lock qa-ico"></i>
@@ -133,25 +141,25 @@
   <!-- Featured Doctors -->
   <section class="featured-doctors">
     <div class="container">
-      <h2 data-i18n="doctors_title">Featured Doctors</h2>
+      <h2 data-i18n="doctors_title_featured">Featured Doctors</h2>
       <div class="doctors-list">
         <article class="doctor-card">
-          <img src="assets/img/doc.jpg" alt="Dr. Jane Smith" class="doctor-photo">
+          <img src="assets/img/default_avatar.jpg" alt="Dr. Jane Smith" class="doctor-photo">
           <h3 data-i18n="doc_smith">Dr. Jane Smith</h3>
-          <p data-i18n="spec_cardiology">Cardiologist</p>
-          <a href="doctors.html?doctor=dr_smith" class="btn ghost" data-i18n="btn_view_profile">View Profile</a>
+          <p data-i18n="spec_cardiology_role">Cardiologist</p>
+          <a href="doctor-profile.html?doctor_id=201" class="btn ghost" data-i18n="btn_view_profile">View Profile</a>
         </article>
         <article class="doctor-card">
-          <img src="assets/img/doc.jpg" alt="Dr. Michael Lee" class="doctor-photo">
+          <img src="assets/img/default_avatar.jpg" alt="Dr. Michael Lee" class="doctor-photo">
           <h3 data-i18n="doc_lee">Dr. Michael Lee</h3>
-          <p data-i18n="spec_dermatology">Dermatologist</p>
-          <a href="doctors.html?doctor=dr_lee" class="btn ghost" data-i18n="btn_view_profile">View Profile</a>
+          <p data-i18n="spec_dermatology_role">Dermatologist</p>
+          <a href="doctor-profile.html?doctor_id=202" class="btn ghost" data-i18n="btn_view_profile">View Profile</a>
         </article>
         <article class="doctor-card">
-          <img src="assets/img/doc.jpg" alt="Dr. Aisha Patel" class="doctor-photo">
+          <img src="assets/img/default_avatar.jpg" alt="Dr. Aisha Patel" class="doctor-photo">
           <h3 data-i18n="doc_patel">Dr. Aisha Patel</h3>
-          <p data-i18n="spec_pediatrics">Pediatrician</p>
-          <a href="doctors.html?doctor=dr_patel" class="btn ghost" data-i18n="btn_view_profile">View Profile</a>
+          <p data-i18n="spec_pediatrics_role">Pediatrician</p>
+          <a href="doctor-profile.html?doctor_id=203" class="btn ghost" data-i18n="btn_view_profile">View Profile</a>
         </article>
       </div>
     </div>
@@ -185,15 +193,15 @@
 <nav class="mc-bottom-bar" role="navigation" aria-label="Quick actions">
   <a href="appointment.html" class="mc-tab" aria-label="Book an appointment">
     <i class="fi fi-rr-calendar mc-ico"></i>
-    <span class="mc-lbl" data-i18n="cta_book">Book</span>
+    <span class="mc-lbl" data-i18n="btn_book">Book</span>
   </a>
   <a href="doctors.html" class="mc-tab" aria-label="Find a doctor">
     <i class="fi fi-rr-stethoscope mc-ico"></i>
-    <span class="mc-lbl" data-i18n="link_find_doctor">Doctors</span>
+    <span class="mc-lbl" data-i18n="qa_doctors">Doctors</span>
   </a>
   <a href="labs.html" class="mc-tab" aria-label="Lab services">
     <i class="fi fi-rr-test-tube mc-ico"></i>
-    <span class="mc-lbl" data-i18n="qa_lab">Labs</span>
+    <span class="mc-lbl" data-i18n="qa_lab">Lab Tests</span>
   </a>
 </nav>
 
@@ -209,35 +217,39 @@
     <div class="footer-col">
       <h3 data-i18n="footer_links">Quick Links</h3>
       <ul>
-        <li><a href="#about" data-i18n="link_about">About</a></li>
-        <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
-        <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
-        <li><a href="labs.html" data-i18n="qa_lab">Labs</a></li>
-        <li><a href="pharmacy.html" data-i18n="qa_pharmacy">Pharmacy</a></li>
-      </ul>
+          <li><a href="#about" data-i18n="link_about">About</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+          <li><a href="specialties.html" data-i18n="qa_specialties">Specialties</a></li>
+          <li><a href="doctors.html" data-i18n="qa_doctors">Doctors</a></li>
+          <li><a href="labs.html" data-i18n="qa_lab">Lab Tests</a></li>
+          <li><a href="request-quote.html" data-i18n="qa_request_quote">Request Quote</a></li>
+        </ul>
     </div>
     <div class="footer-col">
       <h3 data-i18n="footer_follow">Follow Us</h3>
       <div class="footer-socials">
-        <a href="#"><i class="fi fi-rr-facebook"></i></a>
-        <a href="#"><i class="fi fi-rr-linkedin"></i></a>
-        <a href="#"><i class="fi fi-rr-instagram"></i></a>
+        <a href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fi fi-brands-facebook"></i></a>
+        <a href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fi fi-brands-linkedin"></i></a>
+        <a href="https://www.instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fi fi-brands-instagram"></i></a>
       </div>
     </div>
   </div>
   <div class="footer-bottom">
     <p>&copy; 2025 MedConnect. <span data-i18n="rights_reserved">All rights reserved.</span></p>
-    <a href="#privacy" data-i18n="privacy">Privacy Policy</a> | 
+    <a href="#privacy" data-i18n="privacy_politic">Privacy Policy</a> | 
     <a href="#terms" data-i18n="terms">Terms of Service</a>
   </div>
 </footer>
-
-
-
-  <!-- JS -->
-  <script src="js/i18n.js"></script>
-  <script src="js/nav.js"></script>
-  <script src="js/bottom-bar.js"></script>
-  <script type="module" src="js/main.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

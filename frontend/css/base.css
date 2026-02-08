@@ -15,8 +15,8 @@ body {
   font-family: var(--font-base);
   font-weight: var(--font-weight-normal);
   line-height: var(--line-height-base);
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--bg-page);
+  color: var(--text);
 }
 
 /* Let main grow to push footer down */
@@ -24,12 +24,45 @@ main {
   flex: 1;
 }
 
+.hidden {
+  display: none !important;
+}
+
 a {
   color: inherit;
   text-decoration: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.9;
 }
 
 button {
   font-family: inherit;
   cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(0.98);
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+*:focus-visible {
+  outline: 2px solid rgba(0, 33, 245, 0.45);
+  outline-offset: 2px;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 33, 245, 0.2);
 }
